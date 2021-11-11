@@ -1,4 +1,4 @@
-const perv = document.getElementById('btn-prev'),
+const prev = document.getElementById('btn-prev'),
       next = document.getElementById('btn-next'),
       slides = document.querySelectorAll('.slide'),
       dots = document.querySelectorAll('.dot');
@@ -12,24 +12,46 @@ let activeSlide = n => {
     slides[n].classList.add('active');
 }
 
-let mas = [1,2,3,4,5]
+let activeDot = n => {
+    for(element of dots) {
+        element.classList.remove('active');
+    }
+    dots[n].classList.add('active');
+}
 
-
-
+const prepareCurrentSlide = ind => {
+    activeSlide(index);
+    activeDot(index);
+}
 
 let nextSlide = () => {
     if(index == slides.length - 1) {
         index = 0
-        activeSlide(index);
+        prepareCurrentSlide(index);
     } else {
         index++;
-        activeSlide(index);
+        prepareCurrentSlide(index);
     }
 }
 
 let prevSlide = () => {
-    
+    if(index == 0) {
+        index = slides.length - 1
+        prepareCurrentSlide(index);
+    } else {
+        index--;
+        prepareCurrentSlide(index);
+    }
 }
+
+dots.forEach((item, indexDot)=> {
+    item.addEventListener('click', () => {
+        index = indexDot;
+        prepareCurrentSlide(index);
+    })
+})
+
+setInterval(nextSlide, 2000);
 
 next.addEventListener('click', nextSlide);
 prev.addEventListener('click', prevSlide);
